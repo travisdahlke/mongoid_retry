@@ -3,7 +3,6 @@ require 'bundler/setup'
 
 require 'mongoid'
 require 'mongoid/mongoid_retry'
-require 'pry'
 
 require 'rspec'
 

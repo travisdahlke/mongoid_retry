@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/travisdahlke/mongoid_retry.png)](http://travis-ci.org/travisdahlke/mongoid_retry)
+
 # MongoidRetry
 
 TODO: Write a gem description
