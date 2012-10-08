@@ -28,6 +28,28 @@ describe Mongoid::MongoidRetry do
         Thing.count.should == 1
       end
     end
+
+    describe "with compound indexes" do
+      before(:each) do
+        Thing.create(name: 'apple', color: 'red', shape: 'round')
+      end
+
+      subject { Thing.new(name: 'grapefruit', color: 'red', shape: 'round') }
+
+      it "should not raise an exception" do
+        subject.save_and_retry
+      end
+
+      it "should find and update the document" do
+        subject.save_and_retry
+        Thing.all.last.name == 'block'
+      end
+
+      it "should not create a duplicate document" do
+        subject.save_and_retry
+        Thing.count.should == 1
+      end
+    end
   end
 
 end
