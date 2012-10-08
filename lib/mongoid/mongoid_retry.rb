@@ -6,9 +6,9 @@ module Mongoid
     DUPLICATE_KEY_ERROR_CODES = [11000,11001]
 
     # Catch a duplicate key error
-    def save!
+    def save_and_retry
       begin
-        super
+        save!
       rescue Mongo::OperationFailure => e
         if is_a_duplicate_key_error?(e)
           keys = duplicate_key(e)
@@ -28,7 +28,7 @@ module Mongoid
     end
 
     def find_duplicate(keys)
-      find(conditions: keys)
+      self.class.first(conditions: keys)
     end
 
     def duplicate_key(exception)
@@ -38,10 +38,10 @@ module Mongoid
     end
 
     def update_document!(duplicate)
-      attributes.each_pair do |key, value|
+      attributes.except("_id").each_pair do |key, value|
         duplicate[key] = value
       end
-      duplicate.save!
+      duplicate.save_and_retry
     end
 
   end
