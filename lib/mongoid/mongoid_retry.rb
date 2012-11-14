@@ -34,7 +34,7 @@ module Mongoid
     def duplicate_key(exception)
       index = exception.message[/(?<=\.\$)\w*/,0]
       fields = index.split(/\d/).map{|s| s.gsub(/^_|_-?$/,'')}
-      fields.inject({}) {|hash, key| hash[key] = send(key); hash}
+      fields.inject({}) {|hash, key| hash[key] = send(key) if respond_to?(key); hash}
     end
 
     def update_document!(duplicate)
