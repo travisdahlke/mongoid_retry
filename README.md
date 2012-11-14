@@ -2,7 +2,8 @@
 
 # MongoidRetry
 
-TODO: Write a gem description
+Overcome duplicate key errors in MongoDB by catching the exception, finding the existing document, and updating it instead.
+This is currently only compatible with Mongoid 2.x.
 
 ## Installation
 
@@ -20,7 +21,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+class Fruit
+  include Mongoid::Document
+  include Mongoid::MongoidRetry
+
+  field :name
+  index :type, unique: true
+end
+```
+
+    Fruit.new(type: 'apple').save_and_retry
 
 ## Contributing
 
