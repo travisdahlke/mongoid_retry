@@ -4,9 +4,9 @@ require File.expand_path('../lib/mongoid_retry/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Travis Dahlke"]
   gem.email         = ["travis.dahlke@tstmedia.com"]
-  gem.description   = %q{Catch mongo duplicate key errors and retry}
+  gem.description   = %q{Provides a 'save_and_retry' method that will attempt to save a document and, if a duplicate key error is thrown by mongodb, will update the existing document instead of failing.}
   gem.summary       = %q{Catch mongo duplicate key errors and retry}
-  gem.homepage      = ""
+  gem.homepage      = "http://www.github.com/travisdahlke/mongoid_retry"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
