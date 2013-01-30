@@ -3,7 +3,7 @@
 # MongoidRetry
 
 Overcome duplicate key errors in MongoDB by catching the exception, finding the existing document, and updating it instead.
-This is currently only compatible with Mongoid 2.x.
+Compatible with Mongoid 2 and 3.
 
 ## Installation
 
