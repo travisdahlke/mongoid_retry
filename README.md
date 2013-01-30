@@ -1,5 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/travisdahlke/mongoid_retry.png)](http://travis-ci.org/travisdahlke/mongoid_retry)
-
+[![Build Status](https://travis-ci.org/travisdahlke/mongoid_retry.png?branch=master)](https://travis-ci.org/travisdahlke/mongoid_retry)
 # MongoidRetry
 
 Overcome duplicate key errors in MongoDB by catching the exception, finding the existing document, and updating it instead.
