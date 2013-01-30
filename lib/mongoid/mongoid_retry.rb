@@ -31,7 +31,7 @@ module Mongoid
     def save_and_retry
       if ::Mongoid::VERSION < '3'
         begin
-          save!
+          safely.save!
         rescue Mongo::OperationFailure => e
           retry_if_duplicate_key_error(e)
         end
