@@ -15,7 +15,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = MongoidRetry::VERSION
 
-  gem.add_runtime_dependency "mongoid", ['~> 2.0']
+  gem.add_runtime_dependency "mongoid", ['> 2.0']
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "database_cleaner"
   gem.add_development_dependency('rake', ['>= 0.9.2'])
 end
