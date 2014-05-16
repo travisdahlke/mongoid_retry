@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/travisdahlke/mongoid_retry.png?branch=master)](https://travis-ci.org/travisdahlke/mongoid_retry) [![Gem Version](https://badge.fury.io/rb/mongoid_retry.svg)](http://badge.fury.io/rb/mongoid_retry)
-# MongoidRetry
+# MongoidRetry [![Build Status](https://travis-ci.org/travisdahlke/mongoid_retry.png?branch=master)](https://travis-ci.org/travisdahlke/mongoid_retry) [![Gem Version](https://badge.fury.io/rb/mongoid_retry.svg)](http://badge.fury.io/rb/mongoid_retry)
 
 Overcome duplicate key errors in MongoDB by catching the exception, finding the existing document, and updating it instead.
 Compatible with Mongoid 2 and 3.
