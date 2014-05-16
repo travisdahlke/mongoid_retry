@@ -32,6 +32,12 @@ end
 
     Fruit.new(type: 'apple').save_and_retry
 
+ `#save_and_retry` takes a hash of options:
+
+ - `:retries` Specifies the number of times to retry before failing. Defaults to 3.
+ - `:allow_delete` If true, this will delete any conflicting documents if a duplicate key error is encountered.
+
+
 ## Contributing
 
 1. Fork it
