@@ -4,6 +4,7 @@ module Mongoid
   module MongoidRetry
 
     DUPLICATE_KEY_ERROR_CODES = [11000,11001]
+    MAX_RETRIES = 3
 
     if Mongoid::VERSION < '3'
       def self.error_message(exception)
@@ -28,27 +29,33 @@ module Mongoid
     end
 
     # Catch a duplicate key error
-    def save_and_retry
+    def save_and_retry(options = {})
       if ::Mongoid::VERSION < '3'
         begin
           safely.save!
         rescue Mongo::OperationFailure => e
-          retry_if_duplicate_key_error(e)
+          retry_if_duplicate_key_error(e, options)
         end
       else
         begin
           with(safe: true).save!
         rescue Moped::Errors::OperationFailure => e
-          retry_if_duplicate_key_error(e)
+          retry_if_duplicate_key_error(e, options)
         end
       end
     end
 
-    def retry_if_duplicate_key_error(e)
-      if ::Mongoid::MongoidRetry.is_a_duplicate_key_error?(e)
+    def retry_if_duplicate_key_error(e, options)
+      retries = options.fetch(:retries, MAX_RETRIES)
+      if ::Mongoid::MongoidRetry.is_a_duplicate_key_error?(e) && retries > 0
         keys = duplicate_key(e)
         if (duplicate = find_duplicate(keys))
-          update_document!(duplicate)
+          if options[:allow_delete]
+            duplicate.delete
+            save_and_retry(options)
+          else
+            update_document!(duplicate, options.merge(retries: retries - 1))
+          end
         end
       else
         raise e
@@ -67,11 +74,11 @@ module Mongoid
       fields.inject({}) {|hash, key| hash[key] = send(key) if respond_to?(key); hash}
     end
 
-    def update_document!(duplicate)
+    def update_document!(duplicate, options = {})
       attributes.except("_id").each_pair do |key, value|
         duplicate[key] = value
       end
-      duplicate.save_and_retry
+      duplicate.save_and_retry(options)
     end
 
   end

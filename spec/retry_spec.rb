@@ -50,6 +50,32 @@ describe Mongoid::MongoidRetry do
         Thing.count.should == 1
       end
     end
+
+    describe "with conflicting documents" do
+      before(:each) do
+        Thing.create(name: 'banana', color: 'yellow')
+        Thing.create(name: 'apple', color: 'red')
+      end
+
+      subject { Thing.new(name: 'banana', color: 'red') }
+
+      it "should raise error" do
+        expect { subject.save_and_retry }.to raise_error
+      end
+
+      it "should delete conflicting document" do
+        subject.save_and_retry(allow_delete: true)
+        expect(Thing.count).to eq(1)
+      end
+
+      it "should save the new document" do
+        subject.save_and_retry(allow_delete: true)
+        expect(Thing.all.last.name).to eq('banana')
+        expect(Thing.all.last.color).to eq('red')
+      end
+
+    end
+
   end
 
 end
